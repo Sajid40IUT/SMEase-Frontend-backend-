@@ -7,17 +7,5 @@
   "env": {
     "DATABASE_URL": "@database_url",
     "DIRECT_URL": "@direct_url"
-  },
-  "builds": [
-    {
-      "src": "api/**/*.ts",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    }
-  ]
+  }
 }
