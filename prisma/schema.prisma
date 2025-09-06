@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Employee {
+  employee_id       String                  @id
+  name              String
+  role              String
+  department        String
+  phone             String
+  email             String
+  joined_date       DateTime
+  status            String
+  pay_type          PayType
+  salary            Decimal?
+  hourly_rate       Decimal?
+  preferred_day_off String
+  default_shift     String
+  sales             Employee_Product_Sale[]
+  payslips          Payslip[]
+  taxDocuments      TaxDocument[]
+}
+
+model Supplier {
+  supplier_id Int       @id @default(autoincrement())
+  name        String
+  contact     String
+  email       String
+  products    Product[]
+}
+
+model Product {
+  upc         String                  @id
+  name        String
+  stock       Int
+  sold        Int
+  min_stock   Int
+  supplier_id Int
+  sales       Employee_Product_Sale[]
+  supplier    Supplier                @relation(fields: [supplier_id], references: [supplier_id])
+}
+
+model Employee_Product_Sale {
+  sale_id     Int       @id @default(autoincrement())
+  employee_id String
+  product_upc String
+  quantity    Int
+  sale_date   DateTime?
+  label       String?
+  employee    Employee  @relation(fields: [employee_id], references: [employee_id])
+  product     Product   @relation(fields: [product_upc], references: [upc])
+}
+
+model PayrollPeriod {
+  period_id  Int       @id @default(autoincrement())
+  start_date DateTime
+  end_date   DateTime
+  pay_date   DateTime
+  payslips   Payslip[]
+}
+
+model Payslip {
+  payslip_id       Int           @id @default(autoincrement())
+  employee_id      String
+  period_id        Int
+  gross_salary     Decimal
+  federal_tax      Decimal
+  state_tax        Decimal
+  social_security  Decimal
+  medicare         Decimal
+  other_deductions Decimal
+  net_pay          Decimal
+  status           PayslipStatus
+  employee         Employee      @relation(fields: [employee_id], references: [employee_id])
+  period           PayrollPeriod @relation(fields: [period_id], references: [period_id])
+}
+
+model TaxDocument {
+  tax_doc_id        Int          @id @default(autoincrement())
+  employee_id       String
+  tax_year          Int
+  total_income      Decimal
+  total_federal_tax Decimal
+  total_state_tax   Decimal
+  created_on        DateTime
+  file_path         String
+  status            TaxDocStatus
+  employee          Employee     @relation(fields: [employee_id], references: [employee_id])
+}
+
+enum PayType {
+  salary
+  hourly
+}
+
+enum PayslipStatus {
+  paid
+  pending
+}
+
+enum TaxDocStatus {
+  approved
+  pending
+}

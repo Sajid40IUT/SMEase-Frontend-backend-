@@ -1,6 +1,6 @@
 # SMEease - SME Automation Platform
 
-A comprehensive SME (Small and Medium Enterprise) automation platform built with React, Express, and PostgreSQL.
+A comprehensive SME (Small and Medium Enterprise) automation platform built with React, Vercel Serverless Functions, and PostgreSQL.
 
 ## Features
 
@@ -14,9 +14,10 @@ A comprehensive SME (Small and Medium Enterprise) automation platform built with
 ## Tech Stack
 
 - **Frontend**: React + Vite + TypeScript + Tailwind CSS
-- **Backend**: Express.js + TypeScript
+- **Backend**: Vercel Serverless Functions + TypeScript
 - **Database**: PostgreSQL (Supabase)
 - **ORM**: Prisma
+- **Deployment**: Vercel (Full-stack)
 
 ## Getting Started
 
@@ -24,7 +25,7 @@ A comprehensive SME (Small and Medium Enterprise) automation platform built with
 
 - Node.js (v18 or higher)
 - npm or yarn
-- PostgreSQL database (or Supabase account)
+- Supabase account
 
 ### Installation
 
@@ -34,90 +35,70 @@ A comprehensive SME (Small and Medium Enterprise) automation platform built with
    cd SMEase-Frontend-backend-
    ```
 
-2. **Install frontend dependencies**
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Install backend dependencies**
-   ```bash
-   cd SMEease_backend
-   npm install
-   ```
-
-4. **Set up environment variables**
+3. **Set up environment variables**
    ```bash
    # Copy the example environment file
    cp env.example .env
    
-   # Update the .env file with your database credentials
+   # Update the .env file with your Supabase database credentials
    ```
 
-5. **Set up the database**
+4. **Set up the database**
    ```bash
-   cd SMEease_backend
    npx prisma generate
    npx prisma db push
-   npx tsx scripts/migrateData.ts
    ```
 
-6. **Start the development servers**
+5. **Add sample data to Supabase**
+   - Go to your Supabase project SQL Editor
+   - Run the sample data from `SMEease_backend/scripts/sample_data.sql`
+
+6. **Start the development server**
    ```bash
-   # Terminal 1 - Backend
-   cd SMEease_backend
-   npm run dev
-   
-   # Terminal 2 - Frontend
    npm run dev
    ```
 
 7. **Access the application**
    - Frontend: http://localhost:5173
-   - Backend API: http://localhost:4000
+   - API: http://localhost:5173/api/employees (etc.)
 
 ## Deployment
 
-### Railway + Vercel + Supabase
+### Vercel + Supabase (All-in-One)
 
 This project is configured for deployment on:
-- **Frontend**: Vercel
-- **Backend**: Railway
+- **Frontend & Backend**: Vercel (Serverless Functions)
 - **Database**: Supabase
 
 ### Environment Variables
 
-#### Frontend (Vercel)
-```
-VITE_API_URL=https://your-railway-backend.railway.app
-```
-
-#### Backend (Railway)
+#### Vercel Environment Variables
 ```
 DATABASE_URL=your-supabase-database-url
 DIRECT_URL=your-supabase-direct-url
-PORT=4000
 NODE_ENV=production
-FRONTEND_URL=https://your-vercel-app.vercel.app
 ```
 
 ### Deployment Steps
 
-1. **Deploy Backend to Railway**
-   - Connect your GitHub repository
-   - Set root directory to `SMEease_backend`
-   - Add environment variables
+1. **Deploy to Vercel**
+   - Go to [vercel.com](https://vercel.com)
+   - Sign up with GitHub
+   - Import your repository
+   - Vercel will automatically detect Vite framework
+   - Add environment variables in Vercel dashboard
    - Deploy
 
-2. **Deploy Frontend to Vercel**
-   - Connect your GitHub repository
-   - Set framework to Vite
-   - Add environment variables
-   - Deploy
-
-3. **Set up Supabase Database**
+2. **Set up Supabase Database**
    - Create a new Supabase project
-   - Run the database migration
-   - Update Railway with database credentials
+   - Go to SQL Editor
+   - Run the sample data migration from `SMEease_backend/scripts/sample_data.sql`
+   - Copy database credentials to Vercel environment variables
 
 ## Project Structure
 

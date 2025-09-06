@@ -11,15 +11,6 @@ export default defineConfig({
       plugins: [tailwind],
     },
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: process.env.VITE_API_URL || 'http://localhost:4000',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
   build: {
     outDir: 'dist',
     sourcemap: false,
