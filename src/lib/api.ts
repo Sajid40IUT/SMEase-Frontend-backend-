@@ -1,4 +1,6 @@
-const API_BASE_URL = '/api';
+import { config } from './config';
+
+const API_BASE_URL = config.API_BASE_URL;
 
 // Helper function to handle API responses
 const handleResponse = async (response: Response) => {
